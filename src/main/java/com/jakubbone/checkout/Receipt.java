@@ -1,9 +1,8 @@
 package com.jakubbone.checkout;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 public class Receipt {
-    Product product;
-    int quantity;
-    BigDecimal totalPrice;
+    private List<ReceiptPosition> positions;
+
 }
