@@ -11,9 +11,9 @@ import java.util.Map;
 @Service
 @Getter
 public class ProductService {
-    Map<String, Product> products;
-    Map<String, SpecialOffer> specialOffers;
-    Map<String, ComboOffer> comboOffers;
+    private final Map<String, Product> products;
+    private final Map<String, SpecialOffer> specialOffers;
+    private final Map<String, ComboOffer> comboOffers;
 
     public ProductService(Map<String, Product> products, Map<String, SpecialOffer> specialOffers, Map<String, ComboOffer> comboOffers) {
         this.products = products;
