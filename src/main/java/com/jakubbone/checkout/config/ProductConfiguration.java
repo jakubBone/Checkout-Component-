@@ -12,12 +12,12 @@ import java.util.Map;
 @Configuration
 public class ProductConfiguration {
     @Bean
-    public Map<String, Product> products(){
+    public Map<String, Product> products() {
         return Map.of(
-                ("A", new Product("A", new BigDecimal(40.0)),
-                ("B", new Product("A", new BigDecimal(10.0)),
-                ("C", new Product("A", new BigDecimal(30.0)),
-                ("D", new Product("A", new BigDecimal(25.0))
+                "A", new Product("A", new BigDecimal("40")),
+                "B", new Product("B", new BigDecimal("10")),
+                "C", new Product("C", new BigDecimal("30")),
+                "D", new Product("D", new BigDecimal("25"))
         );
     }
 
@@ -35,7 +35,7 @@ public class ProductConfiguration {
     public Map<String, ComboOffer> comboOffers() {
         return Map.of(
                 "A/C", new ComboOffer("A", "C", new BigDecimal("-10")),
-                "B/D", new ComboOffer("B", "D", new BigDecimal("-10"))
+                "B/D", new ComboOffer("B", "D", new BigDecimal("-20"))
         );
     }
 }
