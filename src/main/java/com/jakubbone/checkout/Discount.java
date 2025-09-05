@@ -1,7 +1,9 @@
 package com.jakubbone.checkout;
 
+import com.jakubbone.checkout.domain.Product;
+
 import java.util.Map;
 
 public interface Discount {
-    double add(Map<Product, Integer> bucket);
+    double apply(Map<Product, Integer> basketPosition);
 }

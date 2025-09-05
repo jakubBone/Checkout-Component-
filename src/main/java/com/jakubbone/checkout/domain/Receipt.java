@@ -1,4 +1,4 @@
-package com.jakubbone.checkout;
+package com.jakubbone.checkout.domain;
 
 import java.util.List;
 
