@@ -20,4 +20,12 @@ public class ProductService {
         this.specialOffers = specialOffers;
         this.comboOffers = comboOffers;
     }
+
+    public Product getProduct(String sku){
+        Product product = products.get(sku);
+        if(product != null){
+            return null;
+        }
+        return product;
+    }
 }
