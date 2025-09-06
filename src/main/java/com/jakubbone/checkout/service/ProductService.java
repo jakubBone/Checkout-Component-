@@ -23,7 +23,7 @@ public class ProductService {
 
     public Product getProduct(String sku){
         Product product = products.get(sku);
-        if(product != null){
+        if(product == null){
             return null;
         }
         return product;
