@@ -3,6 +3,7 @@ package com.jakubbone.checkout.service;
 import com.jakubbone.checkout.domain.ComboOffer;
 import com.jakubbone.checkout.domain.Product;
 import com.jakubbone.checkout.domain.SpecialOffer;
+import com.jakubbone.checkout.exception.ProductNotFoundException;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,10 @@ public class ProductService {
         this.comboOffers = comboOffers;
     }
 
-    public Product getProduct(String sku){
+    public Product getProduct(String sku) {
         Product product = products.get(sku);
         if(product == null){
-            return null;
+            throw new ProductNotFoundException(sku);
         }
         return product;
     }
