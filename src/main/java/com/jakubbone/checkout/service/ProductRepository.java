@@ -1,24 +1,24 @@
 package com.jakubbone.checkout.service;
 
 import com.jakubbone.checkout.domain.BundleOffer;
-import com.jakubbone.checkout.domain.Product;
 import com.jakubbone.checkout.domain.MultiBuyOffer;
+import com.jakubbone.checkout.domain.Product;
 import com.jakubbone.checkout.exception.ProductNotFoundException;
 import lombok.Getter;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
+@Repository
 @Getter
-public class ProductService {
+public class ProductRepository {
     private final Map<String, Product> products;
     private final Map<String, MultiBuyOffer> multiBuyOffers;
     private final List<BundleOffer> bundleOffers;
 
-    public ProductService(Map<String, Product> products, Map<String, MultiBuyOffer> multiBuyOffers, List<BundleOffer> bundleOffers) {
+    public ProductRepository(Map<String, Product> products, Map<String, MultiBuyOffer> multiBuyOffers, List<BundleOffer> bundleOffers) {
         this.products = products;
         this.multiBuyOffers = multiBuyOffers;
         this.bundleOffers = bundleOffers;
@@ -26,7 +26,7 @@ public class ProductService {
 
     public Product getProduct(String sku) {
         Product product = products.get(sku);
-        if(product == null){
+        if (product == null) {
             throw new ProductNotFoundException(sku);
         }
         return product;

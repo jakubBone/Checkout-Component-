@@ -1,8 +1,5 @@
 package com.jakubbone.checkout.service;
 
-import com.jakubbone.checkout.domain.BundleOffer;
-import com.jakubbone.checkout.domain.CartItem;
-import com.jakubbone.checkout.domain.Product;
 import com.jakubbone.checkout.domain.Receipt;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +14,20 @@ import java.util.Map;
 
 @Service
 public class CheckoutService {
-    private final ProductService productService;
+    private final ProductRepository productRepository;
     private final PriceCalculator priceCalculator;
-    private final Map<String, CartItem> cart = new HashMap<>();
+    private final Map<String, com.jakubbone.checkout.domain.CartItem> cart = new HashMap<>();
 
-    public CheckoutService(ProductService productService, PriceCalculator priceCalculator) {
-        this.productService = productService;
+    public CheckoutService(ProductRepository productRepository, PriceCalculator priceCalculator) {
+        this.productRepository = productRepository;
         this.priceCalculator = priceCalculator;
     }
 
     public void scanItem(String sku) {
-        Product product = productService.getProduct(sku);
+        com.jakubbone.checkout.domain.Product product = productRepository.getProduct(sku);
         cart.compute(sku, (key, item) -> {
             if (item == null) {
-                return new CartItem(product, 1);
+                return new com.jakubbone.checkout.domain.CartItem(product, 1);
             } else {
                 item.addQuantity(1);
                 return item;
@@ -38,10 +35,12 @@ public class CheckoutService {
         });
     }
 
-    public Receipt checkout() {
-        Receipt receipt = generateReceipt();
-        clearCart();
-        return receipt;
+    public void clearCart() {
+        cart.clear();
+    }
+
+    public Collection<com.jakubbone.checkout.domain.CartItem> getCartItems() {
+        return Collections.unmodifiableCollection(cart.values());
     }
 
     public Receipt generateReceipt() {
@@ -65,11 +64,11 @@ public class CheckoutService {
 
     private List<Receipt.Item> getPricedReceiptItems() {
         List<Receipt.Item> receiptItems = new ArrayList<>();
-        for (CartItem item : cart.values()) {
+        for (com.jakubbone.checkout.domain.CartItem item : cart.values()) {
             BigDecimal lineTotalPrice = priceCalculator.calculatePrice(
                     item.getProduct(),
                     item.getQuantity(),
-                    productService.getMultiBuyOffer(item.getProduct().sku())
+                    productRepository.getMultiBuyOffer(item.getProduct().sku())
             );
             BigDecimal unitPrice = lineTotalPrice.divide(BigDecimal.valueOf(item.getQuantity()), 2, RoundingMode.HALF_UP);
             receiptItems.add(new Receipt.Item(item.getProduct(), item.getQuantity(), unitPrice, lineTotalPrice));
@@ -79,15 +78,15 @@ public class CheckoutService {
 
     private List<Receipt.Discount> getAppliedBundleDiscounts() {
         List<Receipt.Discount> appliedDiscounts = new ArrayList<>();
-        for (BundleOffer bundleOffer : productService.getBundleOffers()) {
-            CartItem item1 = cart.get(bundleOffer.sku1());
-            CartItem item2 = cart.get(bundleOffer.sku2());
+        for (com.jakubbone.checkout.domain.BundleOffer bundleOffer : productRepository.getBundleOffers()) {
+            com.jakubbone.checkout.domain.CartItem item1 = cart.get(bundleOffer.sku1());
+            com.jakubbone.checkout.domain.CartItem item2 = cart.get(bundleOffer.sku2());
 
             if (item1 != null && item2 != null) {
                 int numberOfBundles = Math.min(item1.getQuantity(), item2.getQuantity());
                 if (numberOfBundles > 0) {
                     BigDecimal totalDiscountForOffer = bundleOffer.discount().multiply(BigDecimal.valueOf(numberOfBundles));
-                    String description = String.format("Bundle discount: (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
+                    String description = String.format("Rabat za zestaw (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
                     appliedDiscounts.add(new Receipt.Discount(description, totalDiscountForOffer));
                 }
             }
@@ -95,15 +94,9 @@ public class CheckoutService {
         return appliedDiscounts;
     }
 
-    public void clearCart() {
-        cart.clear();
+    public Receipt checkout() {
+        Receipt receipt = generateReceipt();
+        clearCart();
+        return receipt;
     }
-
-    public Collection<CartItem> getCartItems() {
-        return Collections.unmodifiableCollection(cart.values());
-    }
-
-
-
-
 }
