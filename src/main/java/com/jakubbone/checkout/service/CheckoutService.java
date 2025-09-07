@@ -1,5 +1,6 @@
 package com.jakubbone.checkout.service;
 
+import com.jakubbone.checkout.domain.CartItem;
 import com.jakubbone.checkout.domain.Receipt;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class CheckoutService {
         cart.clear();
     }
 
-    public Collection<com.jakubbone.checkout.domain.CartItem> getCartItems() {
+    public Collection<CartItem> getCartItems() {
         return Collections.unmodifiableCollection(cart.values());
     }
 
