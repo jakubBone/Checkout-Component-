@@ -7,19 +7,21 @@ import com.jakubbone.checkout.exception.ProductNotFoundException;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Getter
 public class ProductService {
     private final Map<String, Product> products;
-    private final Map<String, MultiBuyOffer> specialOffers;
-    private final Map<String, BundleOffer> comboOffers;
+    private final Map<String, MultiBuyOffer> multiBuyOffers;
+    private final List<BundleOffer> bundleOffers;
 
-    public ProductService(Map<String, Product> products, Map<String, MultiBuyOffer> specialOffers, Map<String, BundleOffer> comboOffers) {
+    public ProductService(Map<String, Product> products, Map<String, MultiBuyOffer> multiBuyOffers, List<BundleOffer> bundleOffers) {
         this.products = products;
-        this.specialOffers = specialOffers;
-        this.comboOffers = comboOffers;
+        this.multiBuyOffers = multiBuyOffers;
+        this.bundleOffers = bundleOffers;
     }
 
     public Product getProduct(String sku) {
@@ -30,11 +32,11 @@ public class ProductService {
         return product;
     }
 
-    public MultiBuyOffer getSpecialOffer(String sku) {
-        return specialOffers.get(sku);
+    public Optional<MultiBuyOffer> getMultiBuyOffer(String sku) {
+        return Optional.ofNullable(multiBuyOffers.get(sku));
     }
 
-    public BundleOffer getComboOffer(String key) {
-        return comboOffers.get(key);
+    public List<BundleOffer> getAllBundleOffers() {
+        return bundleOffers;
     }
 }
