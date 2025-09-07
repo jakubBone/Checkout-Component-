@@ -42,8 +42,8 @@ public class CheckoutService {
         cart.clear();
     }
 
-    public Collection<CartItem> getCartItems() {
-        return Collections.unmodifiableCollection(cart.values());
+    public List<CartItem> getCartItems() {
+        return List.copyOf(cart.values());
     }
 
     public Receipt generateReceipt() {
