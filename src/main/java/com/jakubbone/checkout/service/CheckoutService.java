@@ -67,5 +67,13 @@ public class CheckoutService {
 
         return subTotal.subtract(bundleDiscounts).setScale(2, RoundingMode.HALF_UP);
     }
+
+    public void clearCart() {
+        cart.clear();
+    }
+
+    public Collection<CartItem> getCartItems() {
+        return Collections.unmodifiableCollection(cart.values());
+    }
 }
 
