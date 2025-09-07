@@ -1,6 +1,9 @@
 package com.jakubbone.checkout.service;
 
-import com.jakubbone.checkout.domain.*;
+import com.jakubbone.checkout.domain.BundleOffer;
+import com.jakubbone.checkout.domain.CartItem;
+import com.jakubbone.checkout.domain.Product;
+import com.jakubbone.checkout.domain.Receipt;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,26 +45,26 @@ public class CheckoutService {
     }
 
     public Receipt generateReceipt() {
-        List<ReceiptItem> multiBuyItems = getMultiBuyItems();
-        List<AppliedDiscount> bundleDiscounts = getBundleDiscounts();
+        List<Receipt.Item> pricedItems = getPricedReceiptItems();
+        List<Receipt.Discount> bundleDiscounts = getAppliedBundleDiscounts();
 
         BigDecimal subTotal = BigDecimal.ZERO;
-        for (ReceiptItem item : multiBuyItems) {
+        for (Receipt.Item item : pricedItems) {
             subTotal = subTotal.add(item.totalPrice());
         }
 
         BigDecimal totalDiscounts = BigDecimal.ZERO;
-        for (AppliedDiscount discount : bundleDiscounts) {
+        for (Receipt.Discount discount : bundleDiscounts) {
             totalDiscounts = totalDiscounts.add(discount.amount());
         }
 
         BigDecimal finalTotal = subTotal.subtract(totalDiscounts).setScale(2, RoundingMode.HALF_UP);
 
-        return new Receipt(multiBuyItems, bundleDiscounts, finalTotal);
+        return new Receipt(pricedItems, bundleDiscounts, finalTotal);
     }
 
-    private List<ReceiptItem> getMultiBuyItems() {
-        List<ReceiptItem> receiptItems = new ArrayList<>();
+    private List<Receipt.Item> getPricedReceiptItems() {
+        List<Receipt.Item> receiptItems = new ArrayList<>();
         for (CartItem item : cart.values()) {
             BigDecimal lineTotalPrice = priceCalculator.calculatePrice(
                     item.getProduct(),
@@ -69,13 +72,13 @@ public class CheckoutService {
                     productService.getMultiBuyOffer(item.getProduct().sku())
             );
             BigDecimal unitPrice = lineTotalPrice.divide(BigDecimal.valueOf(item.getQuantity()), 2, RoundingMode.HALF_UP);
-            receiptItems.add(new ReceiptItem(item.getProduct(), item.getQuantity(), unitPrice, lineTotalPrice));
+            receiptItems.add(new Receipt.Item(item.getProduct(), item.getQuantity(), unitPrice, lineTotalPrice));
         }
         return receiptItems;
     }
 
-    private List<AppliedDiscount> getBundleDiscounts() {
-        List<AppliedDiscount> appliedDiscounts = new ArrayList<>();
+    private List<Receipt.Discount> getAppliedBundleDiscounts() {
+        List<Receipt.Discount> appliedDiscounts = new ArrayList<>();
         for (BundleOffer bundleOffer : productService.getBundleOffers()) {
             CartItem item1 = cart.get(bundleOffer.sku1());
             CartItem item2 = cart.get(bundleOffer.sku2());
@@ -84,8 +87,8 @@ public class CheckoutService {
                 int numberOfBundles = Math.min(item1.getQuantity(), item2.getQuantity());
                 if (numberOfBundles > 0) {
                     BigDecimal totalDiscountForOffer = bundleOffer.discount().multiply(BigDecimal.valueOf(numberOfBundles));
-                    String description = String.format("Bundle discount for (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
-                    appliedDiscounts.add(new AppliedDiscount(description, totalDiscountForOffer));
+                    String description = String.format("Bundle discount: (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
+                    appliedDiscounts.add(new Receipt.Discount(description, totalDiscountForOffer));
                 }
             }
         }
@@ -99,4 +102,8 @@ public class CheckoutService {
     public Collection<CartItem> getCartItems() {
         return Collections.unmodifiableCollection(cart.values());
     }
+
+
+
+
 }
