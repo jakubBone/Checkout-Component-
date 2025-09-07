@@ -23,7 +23,7 @@ public class ProductConfiguration {
     }
 
     @Bean
-    public Map<String, MultiBuyOffer> specialOffers(){
+    public Map<String, MultiBuyOffer> multiBuyOffers(){
         return Map.of(
                 "A", new MultiBuyOffer("A", 3, new BigDecimal("30")),
                 "B", new MultiBuyOffer("B", 2, new BigDecimal("7.5")),
