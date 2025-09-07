@@ -11,19 +11,11 @@ import java.util.Optional;
 @Component
 public class PriceCalculator {
 
-    public BigDecimal calculatePrice(Product product, int quantity, Optional<MultiBuyOffer> offerOpt){
-        if(offerOpt.isEmpty()){
-            product.price().multiply(BigDecimal.valueOf(quantity));
+    public BigDecimal calculatePrice(Product product, int quantity, Optional<MultiBuyOffer> offerOpt) {
+        if (offerOpt.isPresent() && quantity >= offerOpt.get().requiredQuantity()) {
+            MultiBuyOffer offer = offerOpt.get();
+            return offer.specialPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.HALF_UP);
         }
-
-        MultiBuyOffer offer = offerOpt.get();
-
-        int multiBuyPackage = quantity / offer.requiredQuantity();
-        int remainingItems = quantity % offer.requiredQuantity();
-
-        BigDecimal multiBuyPrice = offer.specialPrice().multiply(BigDecimal.valueOf(multiBuyPackage));
-        BigDecimal remainingItemsPrice = product.price().multiply(BigDecimal.valueOf(remainingItems));
-
-        return multiBuyPrice.add(remainingItemsPrice).setScale(2, RoundingMode.HALF_UP);
+        return product.price().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.HALF_UP);
     }
 }

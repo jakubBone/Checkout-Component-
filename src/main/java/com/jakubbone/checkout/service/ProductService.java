@@ -35,8 +35,4 @@ public class ProductService {
     public Optional<MultiBuyOffer> getMultiBuyOffer(String sku) {
         return Optional.ofNullable(multiBuyOffers.get(sku));
     }
-
-    public List<BundleOffer> getAllBundleOffers() {
-        return bundleOffers;
-    }
 }
