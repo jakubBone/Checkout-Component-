@@ -35,19 +35,33 @@ public class CheckoutService {
         });
     }
 
-    public void clearCart() {
-        cart.clear();
-    }
-
-    public Collection<CartItem> getCartItems() {
-        return Collections.unmodifiableCollection(cart.values());
+    public Receipt checkout() {
+        Receipt receipt = generateReceipt();
+        clearCart();
+        return receipt;
     }
 
     public Receipt generateReceipt() {
-        List<ReceiptItem> receiptItems = new ArrayList<>();
-        List<AppliedDiscount> appliedDiscounts = new ArrayList<>();
-        BigDecimal subTotal = BigDecimal.ZERO;
+        List<ReceiptItem> multiBuyItems = getMultiBuyItems();
+        List<AppliedDiscount> bundleDiscounts = getBundleDiscounts();
 
+        BigDecimal subTotal = BigDecimal.ZERO;
+        for (ReceiptItem item : multiBuyItems) {
+            subTotal = subTotal.add(item.totalPrice());
+        }
+
+        BigDecimal totalDiscounts = BigDecimal.ZERO;
+        for (AppliedDiscount discount : bundleDiscounts) {
+            totalDiscounts = totalDiscounts.add(discount.amount());
+        }
+
+        BigDecimal finalTotal = subTotal.subtract(totalDiscounts).setScale(2, RoundingMode.HALF_UP);
+
+        return new Receipt(multiBuyItems, bundleDiscounts, finalTotal);
+    }
+
+    private List<ReceiptItem> getMultiBuyItems() {
+        List<ReceiptItem> receiptItems = new ArrayList<>();
         for (CartItem item : cart.values()) {
             BigDecimal lineTotalPrice = priceCalculator.calculatePrice(
                     item.getProduct(),
@@ -56,9 +70,12 @@ public class CheckoutService {
             );
             BigDecimal unitPrice = lineTotalPrice.divide(BigDecimal.valueOf(item.getQuantity()), 2, RoundingMode.HALF_UP);
             receiptItems.add(new ReceiptItem(item.getProduct(), item.getQuantity(), unitPrice, lineTotalPrice));
-            subTotal = subTotal.add(lineTotalPrice);
         }
+        return receiptItems;
+    }
 
+    private List<AppliedDiscount> getBundleDiscounts() {
+        List<AppliedDiscount> appliedDiscounts = new ArrayList<>();
         for (BundleOffer bundleOffer : productService.getBundleOffers()) {
             CartItem item1 = cart.get(bundleOffer.sku1());
             CartItem item2 = cart.get(bundleOffer.sku2());
@@ -67,24 +84,19 @@ public class CheckoutService {
                 int numberOfBundles = Math.min(item1.getQuantity(), item2.getQuantity());
                 if (numberOfBundles > 0) {
                     BigDecimal totalDiscountForOffer = bundleOffer.discount().multiply(BigDecimal.valueOf(numberOfBundles));
-                    String description = String.format("Rabat za zestaw (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
+                    String description = String.format("Bundle discount for (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
                     appliedDiscounts.add(new AppliedDiscount(description, totalDiscountForOffer));
                 }
             }
         }
-
-        BigDecimal totalDiscounts = appliedDiscounts.stream()
-                .map(AppliedDiscount::amount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal finalTotal = subTotal.subtract(totalDiscounts).setScale(2, RoundingMode.HALF_UP);
-
-        return new Receipt(receiptItems, appliedDiscounts, finalTotal);
+        return appliedDiscounts;
     }
 
-    public Receipt checkout() {
-        Receipt receipt = generateReceipt();
-        clearCart();
-        return receipt;
+    public void clearCart() {
+        cart.clear();
+    }
+
+    public Collection<CartItem> getCartItems() {
+        return Collections.unmodifiableCollection(cart.values());
     }
 }
