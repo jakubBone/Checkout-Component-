@@ -87,7 +87,7 @@ public class CheckoutService {
                 int numberOfBundles = Math.min(item1.getQuantity(), item2.getQuantity());
                 if (numberOfBundles > 0) {
                     BigDecimal totalDiscountForOffer = bundleOffer.discount().multiply(BigDecimal.valueOf(numberOfBundles));
-                    String description = String.format("Rabat za zestaw (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
+                    String description = String.format("Bundle discount (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
                     appliedDiscounts.add(new Receipt.Discount(description, totalDiscountForOffer));
                 }
             }
