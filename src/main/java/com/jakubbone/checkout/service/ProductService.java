@@ -29,4 +29,12 @@ public class ProductService {
         }
         return product;
     }
+
+    public SpecialOffer getSpecialOffer(String sku) {
+        return specialOffers.get(sku);
+    }
+
+    public ComboOffer getComboOffer(String key) {
+        return comboOffers.get(key);
+    }
 }
