@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex){
         Map<String, Object> errorResp = Map.of(
             "timestamp", LocalDateTime.now(),
-                "status", HttpStatus.INTERNAL_SERVER_ERROR),
+                "status", HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "error", "Internal server error",
                 "message", "An unexpected error occurred"
         );
