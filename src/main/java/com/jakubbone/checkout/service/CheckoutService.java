@@ -1,6 +1,7 @@
 package com.jakubbone.checkout.service;
 
 import com.jakubbone.checkout.domain.CartItem;
+import com.jakubbone.checkout.domain.Product;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,12 +19,18 @@ public class CheckoutService {
         this.priceCalculator = priceCalculator;
     }
 
-    // 1. Scan
-    // 2. Calculate discount
-    // 3. return totalPrice
+    public void scanItem(String sku){
+        Product product = productService.getProduct(sku);
 
-    public BigDecimal scan(String sku){
-        return null;
-    };
+        CartItem existingItem = cart.get(sku);
+        if (existingItem != null) {
+            existingItem.addQuantity(1);
+        } else {
+            cart.put(sku, new CartItem(product, 1));
+        }
+    }
+
+
+
 
 }
