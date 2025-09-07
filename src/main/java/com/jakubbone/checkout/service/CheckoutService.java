@@ -38,12 +38,10 @@ public class CheckoutService {
         });
     }
 
-    public void clearCart() {
-        cart.clear();
-    }
-
-    public List<CartItem> getCartItems() {
-        return List.copyOf(cart.values());
+    public Receipt checkout() {
+        Receipt receipt = generateReceipt();
+        clearCart();
+        return receipt;
     }
 
     public Receipt generateReceipt() {
@@ -97,9 +95,15 @@ public class CheckoutService {
         return appliedDiscounts;
     }
 
-    public Receipt checkout() {
-        Receipt receipt = generateReceipt();
-        clearCart();
-        return receipt;
+    public void clearCart() {
+        cart.clear();
     }
+
+    public List<CartItem> getCartItems() {
+        return List.copyOf(cart.values());
+    }
+
+
+
+
 }
