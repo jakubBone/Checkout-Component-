@@ -32,14 +32,6 @@ public class ProductConfiguration {
         );
     }
 
-    /*@Bean
-    public Map<String, BundleOffer> comboOffers() {
-        return Map.of(
-                "A/C", new BundleOffer("A", "C", new BigDecimal("-10")),
-                "B/D", new BundleOffer("B", "D", new BigDecimal("-20"))
-        );
-    }*/
-
     @Bean
     public List<BundleOffer> bundleOffers() {
         return List.of(

@@ -15,6 +15,5 @@ public class PriceCalculator {
             product.price().multiply(BigDecimal.valueOf(quantity));
         }
 
-
     }
 }
