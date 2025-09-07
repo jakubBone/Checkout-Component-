@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -31,11 +32,19 @@ public class ProductConfiguration {
         );
     }
 
-    @Bean
+    /*@Bean
     public Map<String, BundleOffer> comboOffers() {
         return Map.of(
                 "A/C", new BundleOffer("A", "C", new BigDecimal("-10")),
                 "B/D", new BundleOffer("B", "D", new BigDecimal("-20"))
+        );
+    }*/
+
+    @Bean
+    public List<BundleOffer> bundleOffers() {
+        return List.of(
+                new BundleOffer("A", "B", new BigDecimal("5.00")),
+                new BundleOffer("C", "D", new BigDecimal("10.00"))
         );
     }
 }
