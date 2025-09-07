@@ -1,8 +1,8 @@
 package com.jakubbone.checkout.config;
 
-import com.jakubbone.checkout.domain.ComboOffer;
+import com.jakubbone.checkout.domain.BundleOffer;
 import com.jakubbone.checkout.domain.Product;
-import com.jakubbone.checkout.domain.SpecialOffer;
+import com.jakubbone.checkout.domain.MultiBuyOffer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,20 +22,20 @@ public class ProductConfiguration {
     }
 
     @Bean
-    public Map<String, SpecialOffer> specialOffers(){
+    public Map<String, MultiBuyOffer> specialOffers(){
         return Map.of(
-                "A", new SpecialOffer("A", 3, new BigDecimal("30")),
-                "B", new SpecialOffer("B", 2, new BigDecimal("7.5")),
-                "C", new SpecialOffer("C", 4, new BigDecimal("20")),
-                "D", new SpecialOffer("D", 2, new BigDecimal("23.5"))
+                "A", new MultiBuyOffer("A", 3, new BigDecimal("30")),
+                "B", new MultiBuyOffer("B", 2, new BigDecimal("7.5")),
+                "C", new MultiBuyOffer("C", 4, new BigDecimal("20")),
+                "D", new MultiBuyOffer("D", 2, new BigDecimal("23.5"))
         );
     }
 
     @Bean
-    public Map<String, ComboOffer> comboOffers() {
+    public Map<String, BundleOffer> comboOffers() {
         return Map.of(
-                "A/C", new ComboOffer("A", "C", new BigDecimal("-10")),
-                "B/D", new ComboOffer("B", "D", new BigDecimal("-20"))
+                "A/C", new BundleOffer("A", "C", new BigDecimal("-10")),
+                "B/D", new BundleOffer("B", "D", new BigDecimal("-20"))
         );
     }
 }
