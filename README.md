@@ -63,7 +63,7 @@ Here I assumed the discount values myself (-5 for A+B and -10 for C+D)
 The quickest way to see the service in action is to grab the ready-to-use `.jar` file from the **`"Releases" section on GitHub`**. Just download it and run:
 
 ```bash
-java -jar checkout-0.0.1-SNAPSHOT.jar
+java -jar checkout-1.0.0-SNAPSHOT.jar
 ```
 
 If you're keen to verify the build process or dive into the code, you'll need to clone the repository and build it yourself:
@@ -77,7 +77,7 @@ cd Checkout-Service
 mvn clean package
 
 # Run the application
-java -jar target/checkout-0.0.1-SNAPSHOT.jar
+java -jar target/checkout-1.0.0-SNAPSHOT.jar
 ```
 
 ### Running Tests
