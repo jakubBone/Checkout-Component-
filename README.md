@@ -48,12 +48,11 @@ I am aware that the "normal" business world, discounts often exclude each other.
 
 ## 🎁 Regarding the discounts requirements:
 
-### Req 1:  `"Some items are multi-priced: buy N of them, and they’ll cost you Y cents"`:
+### Requirement 1:  `"Some items are multi-priced: buy N of them, and they’ll cost you Y cents"`:
 
-I initially wondered if it meant a discount on each item in the pack (e.g., for 3x A, each cheaper by 10, totaling 90). 
-But ultimately, based on the phrasing `"they'll cost you Y cents"`, I assumed that "special price" refers to the price for the entire pack (i.e., 3x A costs 30)
+Based on the phrasing `"they'll cost you Y cents"`, I assumed that "special price" refers to the price for the entire pack (i.e., 3x A costs 30)
 
-### Req 2: `"Some items are cheaper when bought together - buy item X with item Y and save Z cents"`:
+### Requirement 2: `"Some items are cheaper when bought together - buy item X with item Y and save Z cents"`:
 
 Here I assumed the discount values myself (-5 for A+B and -10 for C+D) 
 
