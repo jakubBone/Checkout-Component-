@@ -1,5 +1,7 @@
 # 🛒 Checkout Component
 
+![](src/main/resources/logo.png)
+
 This project is my approach to your recruitment task I had the pleasure of solving. 
 I have created a simple but functional checkout system here that can scan and handle discounts.
 
