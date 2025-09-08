@@ -1,4 +1,4 @@
-package com.jakubbone.checkout.service.integraton;
+package com.jakubbone.checkout.service.integration;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
