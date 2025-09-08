@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureWebMvc
-class CheckoutIntegrationTest {
+class CheckoutTest {
 
     @Autowired
     WebApplicationContext context;
