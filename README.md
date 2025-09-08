@@ -72,8 +72,8 @@ If you're keen to verify the build process or dive into the code, you'll need to
 
 ```bash
 # Clone the repository
-git clone https://github.com/jakubBone/Checkout-Service
-cd Checkout-Service
+git clone https://github.com/jakubBone/Checkout-Component
+cd Checkout-Component
 
 # Build the project
 mvn clean package
