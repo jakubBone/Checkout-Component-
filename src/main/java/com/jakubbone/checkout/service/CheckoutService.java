@@ -24,9 +24,9 @@ public class CheckoutService {
         this.priceCalculator = priceCalculator;
     }
 
-    public void scanItem(String sku) {
-        Product product = productRepository.getProduct(sku);
-        cart.compute(sku, (key, item) -> {
+    public void scanItem(String productId) {
+        Product product = productRepository.getProduct(productId);
+        cart.compute(productId, (key, item) -> {
             if (item == null) {
                 return new CartItem(product, 1);
             } else {
@@ -67,7 +67,7 @@ public class CheckoutService {
             BigDecimal lineTotalPrice = priceCalculator.calculatePrice(
                     item.getProduct(),
                     item.getQuantity(),
-                    productRepository.getMultiBuyOffer(item.getProduct().sku())
+                    productRepository.getMultiBuyOffer(item.getProduct().id())
             );
             BigDecimal unitPrice = lineTotalPrice.divide(BigDecimal.valueOf(item.getQuantity()), 2, RoundingMode.HALF_UP);
             receiptItems.add(new Receipt.Item(item.getProduct(), item.getQuantity(), unitPrice, lineTotalPrice));
@@ -78,14 +78,14 @@ public class CheckoutService {
     private List<Receipt.Discount> getAppliedBundleDiscounts() {
         List<Receipt.Discount> appliedDiscounts = new ArrayList<>();
         for (BundleOffer bundleOffer : productRepository.getBundleOffers()) {
-            CartItem item1 = cart.get(bundleOffer.sku1());
-            CartItem item2 = cart.get(bundleOffer.sku2());
+            CartItem item1 = cart.get(bundleOffer.firstProductId());
+            CartItem item2 = cart.get(bundleOffer.secondProductId());
 
             if (item1 != null && item2 != null) {
                 int numberOfBundles = Math.min(item1.getQuantity(), item2.getQuantity());
                 if (numberOfBundles > 0) {
                     BigDecimal totalDiscountForOffer = bundleOffer.discount().multiply(BigDecimal.valueOf(numberOfBundles));
-                    String description = String.format("Bundle discount (%s + %s)", bundleOffer.sku1(), bundleOffer.sku2());
+                    String description = String.format("Bundle discount (%s + %s)", bundleOffer.firstProductId(), bundleOffer.secondProductId());
                     appliedDiscounts.add(new Receipt.Discount(description, totalDiscountForOffer));
                 }
             }

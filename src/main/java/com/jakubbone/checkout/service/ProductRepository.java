@@ -24,15 +24,15 @@ public class ProductRepository {
         this.bundleOffers = bundleOffers;
     }
 
-    public Product getProduct(String sku) {
-        Product product = products.get(sku);
+    public Product getProduct(String id) {
+        Product product = products.get(id);
         if (product == null) {
-            throw new ProductNotFoundException(sku);
+            throw new ProductNotFoundException(id);
         }
         return product;
     }
 
-    public Optional<MultiBuyOffer> getMultiBuyOffer(String sku) {
-        return Optional.ofNullable(multiBuyOffers.get(sku));
+    public Optional<MultiBuyOffer> getMultiBuyOffer(String productId) {
+        return Optional.ofNullable(multiBuyOffers.get(productId));
     }
 }
