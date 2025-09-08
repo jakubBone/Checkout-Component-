@@ -1,6 +1,6 @@
-# 🛒 Checkout Component - Recruitment Task
+# 🛒 Checkout Component 
 
-This project is my approach to the recruitment task I had the pleasure of solving. 
+This project is my approach to your recruitment task I had the pleasure of solving. 
 I have created a simple but functional checkout system here that can scan and handle discounts.
 
 ## 🎯 Features
@@ -12,6 +12,14 @@ The application is a REST service that handles basic checkout operations:
 *   **Multi-Buy Promotions**: Buy N items, pay Y
 *   **Bundle Offers**: Buy X and Y together, get a discount
 *   **Receipt**: At the end, you get a receipt with a summary, prices, and discounts
+
+## 💻 Technologies Used
+
+*   **Java 21**
+*   **Spring Boot 3**
+*   **Maven**
+*   **JUnit 5 & Mockito**
+*   **Git & GitHub**
 
 ## 🛠️ Architecture and Design
 
