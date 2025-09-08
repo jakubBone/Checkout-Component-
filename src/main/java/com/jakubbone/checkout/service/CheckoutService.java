@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,8 +100,4 @@ public class CheckoutService {
     public List<CartItem> getCartItems() {
         return List.copyOf(cart.values());
     }
-
-
-
-
 }
