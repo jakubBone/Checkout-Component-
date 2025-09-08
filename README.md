@@ -1,9 +1,9 @@
-# 🛒 Checkout Component 
+# 🛒 Checkout Component
 
 This project is my approach to your recruitment task I had the pleasure of solving. 
 I have created a simple but functional checkout system here that can scan and handle discounts.
 
-## 🎯 Features
+## 🎯 Features 
 
 The application is a REST service that handles basic checkout operations:
 *   **Scanning products**: You add products to the cart, and the system remembers what you've put there
@@ -23,7 +23,7 @@ The application is a REST service that handles basic checkout operations:
 
 ## 🛠️ Architecture and Design
 
-The project is built on the foundations of **Spring Boot** and **Maven**. I opted for a classic, layered architecture to keep it clear:
+I opted for a classic, layered architecture to keep it clear:
 
 *   **`Controller`**: Here, the API receives HTTP requests
 *   **`Service`**: The heart of the business logic (scanning, counting and handling discounts)
