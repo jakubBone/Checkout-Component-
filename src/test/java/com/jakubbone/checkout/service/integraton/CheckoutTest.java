@@ -64,4 +64,22 @@ class CheckoutTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.finalTotal").value(27.50));
     }
+
+    @Test
+    void shouldReturnNotFoundForInvalidSku() throws Exception {
+        mockMvc.perform(post("/api/checkout/scan/Z"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldNotApplyMultiBuyOfferBelowRequiredQuantity() throws Exception {
+        // 2A = 2 * 40 = 80. No multi-buy offer
+        mockMvc.perform(post("/api/checkout/scan/A"));
+        mockMvc.perform(post("/api/checkout/scan/A"));
+
+        mockMvc.perform(post("/api/checkout/checkout"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.finalTotal").value(80.00))
+                .andExpect(jsonPath("$.discounts.length()").value(0));
+    }
 }
