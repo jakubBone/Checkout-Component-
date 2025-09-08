@@ -1,7 +1,8 @@
-package com.jakubbone.checkout.service;
+package com.jakubbone.checkout.service.unit;
 
 import com.jakubbone.checkout.domain.MultiBuyOffer;
 import com.jakubbone.checkout.domain.Product;
+import com.jakubbone.checkout.service.PriceCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
